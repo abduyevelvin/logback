@@ -1,20 +1,15 @@
 package com.logback.controller;
 
 
-import ch.qos.logback.classic.turbo.MDCValueLevelPair;
-import com.logback.config.LoggerUtils;
 import com.logback.model.User;
 import com.logback.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/example")

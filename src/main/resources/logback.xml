@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <conversionRule conversionWord="highlightex" converterClass="com.logback.config.HighlightingCompositeConverterEx" />
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg %mdc{log-level}%n</pattern>
+        </encoder>
+        <filter class="com.logback.config.ClassNameFilter">
+            <className>default</className>
+            <onMatch>DENY</onMatch>
+        </filter>
+    </appender>
+
+    <logger name="com.logback.service" level="TRACE"/>
+    <logger name="com.logback.controller" level="TRACE"/>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <turboFilter class="ch.qos.logback.classic.turbo.DynamicThresholdFilter">
+        <Key>log-level</Key>
+        <DefaultThreshold>${LOG_LEVEL:-INFO}</DefaultThreshold>
+        <MDCValueLevelPair>
+            <value>TRACE</value>
+            <level>TRACE</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>DEBUG</value>
+            <level>DEBUG</level>
+        </MDCValueLevelPair>
+    </turboFilter>
+
+</configuration>
