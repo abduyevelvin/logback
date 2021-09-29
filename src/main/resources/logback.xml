@@ -2,13 +2,31 @@
 <configuration>
     <conversionRule conversionWord="highlightex" converterClass="com.logback.config.HighlightingCompositeConverterEx" />
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg %mdc{log-level}%n</pattern>
-        </encoder>
-        <filter class="com.logback.config.ClassNameFilter">
-            <className>default</className>
-            <onMatch>DENY</onMatch>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <expression>
+                    if(logger.startsWith("org.apache.http"))
+                    return true;
+
+                    if(mdc == null || mdc.get("entity") == null)
+                    return false;
+
+                    String payee = (String) mdc.get("entity");
+
+                    if(logger.equals("org.apache.http.wire") &amp;&amp; <!-- & encoded as &amp; -->
+                    payee.contains("someSpecialValue") &amp;&amp;
+                    !message.contains("someSecret")) {
+                    return true;
+                    }
+
+                    return false;
+                </expression>
+            </evaluator>
         </filter>
+
+    <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg %mdc{package-level}%n</pattern>
+        </encoder>
     </appender>
 
     <logger name="com.logback.service" level="TRACE"/>
