@@ -28,6 +28,8 @@ public class UserController {
     @ResponseBody
     public User getEmployee() {
 
+        LoggerUtils.createLoggerFor();
+
         log.trace("Trace Logs");
         log.error("Error Logs");
         log.warn("Warn Logs");
